@@ -2,12 +2,13 @@
 
 ## Project Overview
 A single-file HTML website for Champs Global Solutions business funding.
-- **File**: `index.html` (renamed from `champsglobalservices.html` for GitHub Pages compatibility)
+- **File**: `index.html`
 - **Assets**: `New Logo.png`, `Banner.png`
 - **Local dev server**: `python3 -m http.server 8090` (port 8090 — port 8080 was already in use)
-- **GitHub repo**: `LD-botzillabot-cmd/Champs-Global` (Public)
-- **Hosting**: GitHub Pages (free static hosting)
-- **Live reference site**: https://champsglobalservices.com
+- **GitHub repo**: `LD-botzilabot-cmd/Champs-Global` (Public)
+- **Hosting**: Vercel (auto-deploys on every push to `main`)
+- **Live site**: https://champsglobalsolutions.com
+- **DNS**: GoDaddy → Vercel (A record `76.76.21.21`, CNAME `www` → Vercel)
 
 ---
 
@@ -15,7 +16,7 @@ A single-file HTML website for Champs Global Solutions business funding.
 
 ### 1. Logo Replacement
 - **Decision**: Replaced text/placeholder logo with `champs-logo-DnrdYJcs.png`
-- **Final size**: 72px height (started at 48px → bumped 20% to 58px → bumped 25% more to 72px)
+- **Final size**: 72px height (started at 48px → bumped 20% to 58px → bumped 25% more to 72px); scaled to 54px on mobile
 - **Rationale**: Match brand identity; user iterated on size to find the right visual weight in the nav bar
 
 ### 1a. Logo Transparent Background (champs-logo-DnrdYJcs.png)
@@ -49,7 +50,7 @@ A single-file HTML website for Champs Global Solutions business funding.
 
 ### 6. Service Card Modals (Learn More)
 - **Decision**: Each of the 5 service cards has a "Learn More" button that opens a modal overlay (`openServiceModal('type')`)
-- **Services covered**: Business Loan Matching, Personal Credit Lines, Real Estate Loans, Equipment Financing, Credit Score Improvement
+- **Services covered**: Business Loans, Personal Loans, Real Estate Loans, Equipment Financing, Credit Repair
 - **Content source**: Fetched from compiled JS bundle at `https://champsglobalservices.com/assets/index-C4VyHRrV.js` via curl/grep
 - **Rationale**: Live site uses React with a compiled bundle — WebFetch couldn't extract component data directly, so raw bundle parsing was used to get accurate copy
 
@@ -99,16 +100,33 @@ A single-file HTML website for Champs Global Solutions business funding.
   - Equifax: `https://www.equifax.com/personal/products/credit/`
 - **Rationale**: Generic homepage links weren't useful; users need to land directly on the page to request their report
 
+### 16. Hamburger Menu & Mobile Overhaul
+- **Decision**: Added hamburger menu (mobile only, ≤768px) — desktop nav unchanged
+- **Hamburger behavior**: 3-line icon animates to ✕ when open; clicking any link or tapping outside closes the menu
+- **Mobile nav**: Fixed dropdown panel below the 68px nav bar, lists all nav links + Apply Now button
+- **Mobile layout fixes**:
+  - Hero padding and h1 reduced for small screens
+  - Hero badges stack full-width instead of overflowing
+  - All 2-column form grids → single column (previously form fields were cramped)
+  - Review step grid → single column
+  - Resources page bureau cards (3-col → 1-col) and credit factors grid (2-col → 1-col)
+  - Resources page section horizontal padding reduced from 40px to 20px
+  - Modals slide up from the bottom (sheet style) on mobile
+  - Logo scaled to 54px height on mobile to fit within 68px nav
+- **Bug fix**: `backToLoanType()` JS function was missing — caused an error when clicking "← Change loan type"; now added
+- **Classes added**: `resource-bureaus-grid`, `credit-factors-grid` to allow CSS media query overrides on inline-styled elements
+
 ---
 
 ## Architecture Notes
 
-- **Single-file**: All HTML, CSS, and JS live in `champsglobalservices.html` — no build tools, no frameworks
-- **Page switching**: `showPage(pageName)` shows/hides top-level page divs (`#home`, `#resources`, `#apply-page`)
+- **Single-file**: All HTML, CSS, and JS live in `index.html` — no build tools, no frameworks
+- **Page switching**: `showPage(pageName)` shows/hides top-level page divs (`#page-home`, `#page-resources`)
 - **Scroll pattern**: Always call `showPage()` first, then use `setTimeout(..., 50)` before `scrollIntoView` so the DOM paint completes before scrolling
 - **Modal pattern**: Single overlay div reused for service modals, legal modals, and any future popups
 - **CSS variables**: `--orange`, `--navy`, `--navy-dark`, `--text-dark`, `--text-mid`, `--text-light`, `--bg-light`, `--border`
 - **Content sourcing**: Live site is React + Vite + Tailwind with compiled JS. Content was extracted by curling the JS bundle and grepping for relevant strings.
+- **Deployment**: Push to `main` on GitHub → Vercel auto-deploys in ~30 seconds
 
 ---
 
@@ -117,7 +135,6 @@ A single-file HTML website for Champs Global Solutions business funding.
 - Contact link in footer (currently `href="#"` — no contact page or modal built yet)
 - Services footer column links (Business Loan Matching, Credit Line Facilitation, etc.) — currently `href="#"`, could link to service cards or open modals
 - Form submission backend — currently front-end only; no data is sent anywhere on submit
-- Equipment Financing and Credit Score Improvement modals — content was attempted to be extracted from JS bundle but grep complexity limit was hit; may need manual entry
 
 ---
 
@@ -128,21 +145,25 @@ A single-file HTML website for Champs Global Solutions business funding.
 
 ---
 
-## Deployment — GitHub Pages
-- **Repo**: `LD-botzillabot-cmd/Champs-Global` (Public)
-- **File renamed**: `champsglobalservices.html` → `index.html` (GitHub Pages requires this as the entry point)
-- **Steps**: Upload `index.html`, `New Logo.png`, `Banner.png` → Settings → Pages → Branch: main / root → Save → Add custom domain → Update DNS at registrar
-- **DNS records needed** (at domain registrar):
-  - A records: `185.199.108.153`, `.109.`, `.110.`, `.111.153` pointing to `@`
-  - CNAME: `www` → `LD-botzillabot-cmd.github.io`
-- **HTTPS**: Enable "Enforce HTTPS" in GitHub Pages settings after DNS propagates (up to 48hrs, usually under 1hr)
+## Deployment — Vercel + GoDaddy
+
+### Status: LIVE ✅
+
+- **Repo**: `LD-botzilabot-cmd/Champs-Global` (Public) — note: one `l` in `botzila`
+- **Hosting**: Vercel (connected to GitHub repo — auto-deploys on every push to `main`)
+- **Live URL**: https://champsglobalsolutions.com
+- **DNS (GoDaddy)**:
+  - A record: `@` → `76.76.21.21` (Vercel IP)
+  - CNAME: `www` → Vercel DNS value
+  - MX records: GoDaddy email hosting (for `info@champsglobalsolutions.com`)
+- **HTTPS**: Enforced via Vercel (Let's Encrypt, automatic)
 
 ---
 
 ## Key Files
 | File | Purpose |
 |------|---------|
-| `index.html` | Entire website — HTML + CSS + JS (renamed from `champsglobalservices.html`) |
+| `index.html` | Entire website — HTML + CSS + JS |
 | `New Logo.png` | Current active logo (gray background removed, used in nav bar) |
 | `champs-logo-DnrdYJcs.png` | Previous logo (retired — no longer in use) |
 | `Banner.png` | Reference screenshot of live site banner (used during font discussion) |
