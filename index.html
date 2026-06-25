@@ -477,19 +477,95 @@
     .services-grid { grid-template-columns: repeat(3, 1fr); }
     .why-grid { grid-template-columns: repeat(2, 1fr); }
   }
+  /* ── HAMBURGER BUTTON ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background .2s;
+  }
+  .hamburger:hover { background: var(--bg-light); }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text-dark);
+    border-radius: 2px;
+    transition: transform .3s, opacity .3s;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE NAV DROPDOWN ── */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 68px;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    flex-direction: column;
+    padding: 8px 20px 20px;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav-link {
+    display: block;
+    padding: 15px 4px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--border);
+    transition: color .2s;
+  }
+  .mobile-nav-link:last-of-type { border-bottom: none; }
+  .mobile-nav-link:hover { color: var(--orange); }
+  .mobile-nav .btn-orange {
+    margin-top: 14px;
+    display: block;
+    text-align: center;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
   @media (max-width: 768px) {
     nav { padding: 0 20px; }
     .nav-links { display: none; }
-    .hero h1 { font-size: 32px; }
+    .hamburger { display: flex; }
+    .logo img { height: 54px; }
+    .hero { padding: 60px 20px 40px; }
+    .hero h1 { font-size: 30px; }
+    .badge { min-width: 0; flex: 1 1 100%; max-width: 100%; }
     section { padding: 60px 20px; }
+    .resources-hero { padding-left: 20px !important; padding-right: 20px !important; }
+    #page-resources section { padding-left: 20px !important; padding-right: 20px !important; }
     .services-grid, .who-grid, .why-grid, .testi-grid, .loan-cards { grid-template-columns: 1fr; }
     .footer-cols { grid-template-columns: 1fr; }
     .sound-box { padding: 32px 24px; }
+    .sound-box h2 { font-size: 22px; }
     .sound-checks { grid-template-columns: 1fr; }
     .trust-bar { flex-direction: column; }
     .trust-item { border-right: none; border-bottom: 1px solid var(--border); }
     .trust-item:last-child { border-bottom: none; }
     .stepper-label { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+    .review-grid { grid-template-columns: 1fr; }
+    .resource-bureaus-grid { grid-template-columns: 1fr !important; }
+    .credit-factors-grid { grid-template-columns: 1fr !important; }
+    .loan-type-title { font-size: 22px; }
+    .modal-overlay { align-items: flex-end; padding: 0; }
+    .modal-box { border-radius: 20px 20px 0 0; max-height: 90vh; max-width: 100%; }
   }
 
   /* ── SERVICE MODAL ── */
@@ -532,6 +608,9 @@
   <a href="#" class="logo" onclick="showPage('home');window.scrollTo({top:0,behavior:'smooth'});return false;">
     <img src="New%20Logo.png?v=1" alt="Champs Global Solutions" style="height: 72px; width: auto;">
   </a>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
   <div class="nav-links">
     <a href="#services" onclick="showPage('home');setTimeout(()=>document.getElementById('services').scrollIntoView({behavior:'smooth'}),50);return false;">Services</a>
     <a href="#how-it-works" onclick="showPage('home');setTimeout(()=>document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'}),50);return false;">How It Works</a>
@@ -541,6 +620,16 @@
     <a href="#" class="btn-orange" onclick="scrollToApply();return false;">Apply Now</a>
   </div>
 </nav>
+
+<!-- MOBILE NAV DROPDOWN -->
+<div class="mobile-nav" id="mobile-nav">
+  <a class="mobile-nav-link" href="#services" onclick="closeMobileNav();showPage('home');setTimeout(()=>document.getElementById('services').scrollIntoView({behavior:'smooth'}),50);return false;">Services</a>
+  <a class="mobile-nav-link" href="#how-it-works" onclick="closeMobileNav();showPage('home');setTimeout(()=>document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'}),50);return false;">How It Works</a>
+  <a class="mobile-nav-link" href="#eligibility" onclick="closeMobileNav();showPage('home');setTimeout(()=>document.getElementById('eligibility').scrollIntoView({behavior:'smooth'}),50);return false;">Eligibility</a>
+  <a class="mobile-nav-link" href="#" onclick="closeMobileNav();showPage('resources');return false;">Resources</a>
+  <a class="mobile-nav-link" href="#faq" onclick="closeMobileNav();showPage('home');setTimeout(()=>document.getElementById('faq').scrollIntoView({behavior:'smooth'}),50);return false;">FAQ</a>
+  <a href="#" class="btn-orange" onclick="closeMobileNav();scrollToApply();return false;">Apply Now</a>
+</div>
 
 <!-- ════ HOME PAGE ════ -->
 <div id="page-home" class="page active">
@@ -1406,7 +1495,7 @@
   <section style="padding:60px 40px; background:white;">
     <h2 class="section-title" style="margin-bottom:12px;">Access Your Credit Reports</h2>
     <p class="section-subtitle">Get your free credit reports from all three major credit bureaus. Knowing your credit score helps you understand your funding options and improve your approval chances.</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto 32px;">
+    <div class="resource-bureaus-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto 32px;">
       <div class="service-card" style="text-align:center;">
         <div style="width:64px;height:64px;background:var(--orange-light);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;">🛡️</div>
         <h3>TransUnion Credit Report</h3>
@@ -1464,7 +1553,7 @@
     <div style="max-width:740px;margin:0 auto;border:1px solid var(--border);border-radius:14px;padding:36px 40px;">
       <h2 style="font-size:22px;font-weight:800;margin-bottom:10px;">What Affects Your Credit Score</h2>
       <p style="font-size:14px;color:var(--text-mid);line-height:1.65;margin-bottom:24px;">Your credit score is calculated based on five main factors. Understanding these can help you make informed decisions to improve your creditworthiness:</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div class="credit-factors-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <div style="background:#FFF9F5;border:1px solid #FDDCBB;border-radius:10px;padding:18px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <strong style="font-size:14px;">Payment History</strong>
@@ -2174,6 +2263,33 @@
     if (e.target === document.getElementById('legalModal'))
       document.getElementById('legalModal').classList.remove('open');
   }
+
+  function toggleMobileNav() {
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('mobile-nav');
+    const isOpen = nav.classList.contains('open');
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+    btn.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+  }
+
+  function closeMobileNav() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobile-nav').classList.remove('open');
+  }
+
+  function backToLoanType() {
+    setStepperActive(1);
+    showOnlyStep('step1-content');
+  }
+
+  document.addEventListener('click', function(e) {
+    const nav = document.getElementById('mobile-nav');
+    const btn = document.getElementById('hamburger');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
 </script>
 </body>
 </html>
