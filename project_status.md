@@ -93,14 +93,27 @@ A single-file HTML website for Champs Global Solutions business funding.
 - **Decision**: Footer links use the same `showPage('home')` + `scrollIntoView` pattern as nav bar links
 - **Rationale**: Footer links previously had bare `href="#"` and went nowhere. Users on the Resources or Apply pages need footer links to correctly switch to home and scroll to the section.
 
-### 15. Resources Page — Credit Bureau Links
+### 15. Legal Modal Contact Emails
+- **Decision**: Updated all placeholder emails in Privacy Policy, Terms of Service, and State Disclosures modals to `info@champsglobalsolutions.com`
+- **Previous values**: `privacy@champsglobal.com`, `legal@champsglobal.com`, `compliance@champsglobal.com` (all placeholders)
+- **Phone**: `(555) 123-4567` remains a placeholder — update when real number is available
+
+### 16. Footer Services Links → Service Modals
+- **Decision**: Footer "Services" column links now open their matching Learn More modal overlays
+  - Business Loan Matching → `openServiceModal('business')`
+  - Credit Line Facilitation → `openServiceModal('personal')` (personal loans include credit lines)
+  - Equipment Financing → `openServiceModal('equipment')`
+  - Real Estate Loans → `openServiceModal('realestate')`
+- **Rationale**: Links previously went nowhere (`href="#"`); users expect footer service links to show more detail
+
+### 17. Resources Page — Credit Bureau Links
 - **Decision**: "Get Your Report" buttons link to specific credit report pages (not homepages), all with `target="_blank" rel="noopener noreferrer"`
   - TransUnion: `https://www.transunion.com/credit-report`
   - Experian: `https://www.experian.com/lp/credit-score-unbr/`
   - Equifax: `https://www.equifax.com/personal/products/credit/`
 - **Rationale**: Generic homepage links weren't useful; users need to land directly on the page to request their report
 
-### 16. Hamburger Menu & Mobile Overhaul
+### 18. Hamburger Menu & Mobile Overhaul
 - **Decision**: Added hamburger menu (mobile only, ≤768px) — desktop nav unchanged
 - **Hamburger behavior**: 3-line icon animates to ✕ when open; clicking any link or tapping outside closes the menu
 - **Mobile nav**: Fixed dropdown panel below the 68px nav bar, lists all nav links + Apply Now button
@@ -133,8 +146,7 @@ A single-file HTML website for Champs Global Solutions business funding.
 ## Pending / Not Yet Done
 
 - Contact link in footer (currently `href="#"` — no contact page or modal built yet)
-- Services footer column links (Business Loan Matching, Credit Line Facilitation, etc.) — currently `href="#"`, could link to service cards or open modals
-- Form submission backend — currently front-end only; no data is sent anywhere on submit
+- Form submission backend — currently front-end only; no data is sent anywhere on submit (plan: Web3Forms integration, one access key covers all loan type submissions, 250 free/month)
 
 ---
 
