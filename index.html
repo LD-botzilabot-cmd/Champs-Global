@@ -2113,27 +2113,38 @@
     }
 
     const submitBtn = document.querySelector('#step4-wrap .btn-orange');
+    const resetBtn = () => { if (submitBtn) { submitBtn.textContent = 'Submit Application →'; submitBtn.disabled = false; } };
     if (submitBtn) { submitBtn.textContent = 'Submitting…'; submitBtn.disabled = true; }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
 
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     })
     .then(r => r.json())
     .then(data => {
+      clearTimeout(timeout);
       if (data.success) {
         showOnlyStep('final-success');
         document.querySelectorAll('.stepper-num').forEach(n => n.className = 'stepper-num done');
         document.querySelectorAll('.stepper-label').forEach(l => l.className = 'stepper-label active');
       } else {
-        if (submitBtn) { submitBtn.textContent = 'Submit Application →'; submitBtn.disabled = false; }
-        alert('Submission failed. Please try again or email us directly at info@champsglobalsolutions.com.');
+        resetBtn();
+        alert('Submission failed (' + (data.message || 'unknown error') + '). Please email info@champsglobalsolutions.com directly.');
       }
     })
-    .catch(() => {
-      if (submitBtn) { submitBtn.textContent = 'Submit Application →'; submitBtn.disabled = false; }
-      alert('Network error. Please check your connection and try again.');
+    .catch(err => {
+      clearTimeout(timeout);
+      resetBtn();
+      if (err.name === 'AbortError') {
+        alert('Request timed out. Please check your connection and try again, or email info@champsglobalsolutions.com.');
+      } else {
+        alert('Network error: ' + err.message + '. Please try again or email info@champsglobalsolutions.com.');
+      }
     });
   }
 
