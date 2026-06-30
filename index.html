@@ -954,9 +954,11 @@
           <div class="stepper-label">Review & Submit</div>
         </div>
       </div>
-      <div class="loan-type-title">What type of funding do you need?</div>
-      <div class="loan-type-sub">Select one loan type to get started</div>
-      <div class="loan-type-note">Need multiple types? Submit separate applications for each</div>
+      <div id="step1-header">
+        <div class="loan-type-title">What type of funding do you need?</div>
+        <div class="loan-type-sub">Select one loan type to get started</div>
+        <div class="loan-type-note">Need multiple types? Submit separate applications for each</div>
+      </div>
       <!-- STEP 1: Loan Type -->
       <div id="step1-content">
         <div class="loan-cards">
@@ -1470,6 +1472,7 @@
           <div style="font-size:48px;margin-bottom:12px;">✅</div>
           <h3>Application Submitted!</h3>
           <p>Thank you! We'll review your application and reach out within 12–72 hours.</p>
+          <button onclick="resetForm()" class="btn-orange" style="margin-top:24px;padding:14px 32px;font-size:15px;border-radius:10px;">Submit Another Application</button>
         </div>
       </div>
 
@@ -1812,6 +1815,8 @@
         const el = document.getElementById(id);
         if (el) el.style.display = id === stepId ? 'block' : 'none';
       });
+    const header = document.getElementById('step1-header');
+    if (header) header.style.display = stepId === 'step1-content' ? 'block' : 'none';
     document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -2391,6 +2396,34 @@
   }
 
   function backToLoanType() {
+    setStepperActive(1);
+    showOnlyStep('step1-content');
+  }
+
+  function resetForm() {
+    selectedLoanType = null;
+    prevPersonalCount = 0;
+    prevBusinessCount = 0;
+    uploadedFiles = [];
+
+    // Clear all inputs and selects
+    document.querySelectorAll('#app-form-wrap input, #app-form-wrap select').forEach(el => {
+      el.value = '';
+      el.classList.remove('error');
+    });
+    document.querySelectorAll('.form-err').forEach(el => el.textContent = '');
+    document.getElementById('form-alert').style.display = 'none';
+
+    // Clear previous funding rows and file list
+    document.getElementById('prev-personal-list').innerHTML = '';
+    document.getElementById('prev-business-list').innerHTML = '';
+    document.getElementById('file-list').innerHTML = '';
+
+    // Deselect loan card
+    document.querySelectorAll('.loan-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('loan-continue').style.display = 'none';
+
+    // Reset stepper and go back to step 1
     setStepperActive(1);
     showOnlyStep('step1-content');
   }
