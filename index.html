@@ -2029,6 +2029,8 @@
 
     if (selectedLoanType === 'business') {
       payload.subject = 'New Business Loan Application — ' + (val('clientName') || 'Unknown Applicant');
+      payload.name    = val('clientName');
+      payload.email   = val('clientEmail');
       payload['Loan Type']                   = 'Business Loan';
       payload['Client Name']                 = val('clientName');
       payload['Client Address']              = val('clientAddress');
@@ -2059,6 +2061,8 @@
 
     } else if (selectedLoanType === 'personal') {
       payload.subject = 'New Personal Loan Application — ' + (val('clientName') || 'Unknown Applicant');
+      payload.name    = val('clientName');
+      payload.email   = val('clientEmail');
       payload['Loan Type']              = 'Personal Loan';
       payload['Client Name']            = val('clientName');
       payload['Client Address']         = val('clientAddress');
@@ -2078,6 +2082,8 @@
 
     } else if (selectedLoanType === 'realestate') {
       payload.subject = 'New Real Estate Loan Application — ' + (val('borrowerName') || 'Unknown Applicant');
+      payload.name    = val('borrowerName');
+      payload.email   = val('reEmail');
       payload['Loan Type']                    = 'Real Estate Loan';
       payload['Loan Program']                 = val('loanProgram');
       payload['Borrower Name']                = val('borrowerName');
