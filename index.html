@@ -2159,16 +2159,16 @@
         document.querySelectorAll('.stepper-label').forEach(l => l.className = 'stepper-label active');
       } else {
         resetBtn();
-        alert('Submission failed (' + (data.message || 'unknown error') + '). Please email info@champsglobalsolutions.com directly.');
+        alert('Submission failed (' + (data.message || 'unknown error') + '). Please try again or contact us at champsglobalsolutions.com.');
       }
     })
     .catch(err => {
       clearTimeout(timeout);
       resetBtn();
       if (err.name === 'AbortError') {
-        alert('Request timed out. Please check your connection and try again, or email info@champsglobalsolutions.com.');
+        alert('Request timed out. Please check your connection and try again.');
       } else {
-        alert('Network error: ' + err.message + '. Please try again or email info@champsglobalsolutions.com.');
+        alert('Network error: ' + err.message + '. Please try again.');
       }
     });
   }
