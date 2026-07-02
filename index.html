@@ -1019,7 +1019,26 @@
               </div>
               <div class="form-field">
                 <label class="form-label">Date of Birth <span class="req">*</span></label>
-                <input class="form-input" id="f-dateOfBirth" type="date">
+                <div style="display:flex;gap:8px;">
+                  <select id="f-dobMonth" class="form-select" onchange="updateDOB()" style="flex:3;">
+                    <option value="">Month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                  <select id="f-dobDay" class="form-select" onchange="updateDOB()" style="flex:2;"></select>
+                  <select id="f-dobYear" class="form-select" onchange="updateDOB()" style="flex:2;"></select>
+                </div>
+                <input type="hidden" id="f-dateOfBirth">
                 <span class="form-err" id="e-dateOfBirth"></span>
               </div>
             </div>
@@ -2411,6 +2430,29 @@
     document.getElementById('hamburger').classList.remove('open');
     document.getElementById('mobile-nav').classList.remove('open');
   }
+
+  function updateDOB() {
+    const m = document.getElementById('f-dobMonth').value;
+    const d = document.getElementById('f-dobDay').value;
+    const y = document.getElementById('f-dobYear').value;
+    document.getElementById('f-dateOfBirth').value = (m && d && y) ? y + '-' + m + '-' + d : '';
+  }
+
+  (function initDOB() {
+    const dayEl  = document.getElementById('f-dobDay');
+    const yearEl = document.getElementById('f-dobYear');
+    dayEl.innerHTML = '<option value="">Day</option>' +
+      Array.from({length:31}, (_,i) => {
+        const d = String(i+1).padStart(2,'0');
+        return `<option value="${d}">${i+1}</option>`;
+      }).join('');
+    const curYear = new Date().getFullYear();
+    yearEl.innerHTML = '<option value="">Year</option>' +
+      Array.from({length: curYear - 1919}, (_,i) => {
+        const y = curYear - 18 - i;
+        return `<option value="${y}">${y}</option>`;
+      }).join('');
+  })();
 
   function backToLoanType() {
     setStepperActive(1);
