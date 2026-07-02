@@ -2040,6 +2040,7 @@
 
   function submitForm() {
     const val = id => document.getElementById('f-' + id)?.value.trim() || '';
+    const line = (label, id) => `${label}: ${val(id) || 'N/A'}`;
 
     const payload = {
       access_key: '8e55a87f-5100-46eb-aa5a-c6f78361062e',
@@ -2048,94 +2049,111 @@
     };
 
     if (selectedLoanType === 'business') {
-      payload.subject = 'New Business Loan Application — ' + (val('clientName') || 'Unknown Applicant');
+      payload.subject = 'New Business Loan Application - ' + (val('clientName') || 'Unknown Applicant');
       payload.name    = val('clientName');
       payload.email   = val('clientEmail');
-      payload['Loan Type']                   = 'Business Loan';
-      payload['Client Name']                 = val('clientName');
-      payload['Client Address']              = val('clientAddress');
-      payload['Client SSN']                  = val('clientSSN');
-      payload['Date of Birth']               = val('dateOfBirth');
-      payload['Client Email']                = val('clientEmail');
-      payload['Client Cellphone']            = val('clientCellphone');
-      payload['Estimated Credit Score']      = val('estimatedCreditScore');
-      payload['Annual Salary']               = val('annualSalary');
-      payload['Driver License Number']       = val('driverLicenseNumber');
-      payload['DL Expiration']               = val('dlExpiration');
-      payload['DL Issue Date']               = val('dlIssueDate');
-      payload['Military Affiliation']        = val('militaryAffiliation');
-      payload['Amount Requested']            = val('amountRequested');
-      payload['Job Position / Years']        = val('jobPositionYears');
-      payload['Credit Website Login']        = val('creditWebsiteLogin');
-      payload['Business Name']               = val('businessName');
-      payload['Business Phone']              = val('businessPhone');
-      payload['Business Address']            = val('businessAddress');
-      payload['Position / Title']            = val('position');
-      payload['Business Type']               = val('businessType');
-      payload['Business Email']              = val('businessEmail');
-      payload['EIN Number']                  = val('einNumber');
-      payload['Date of Incorporation']       = val('dateOfIncorporation');
-      payload['State of Incorporation']      = val('stateOfIncorporation');
-      payload['Annual Revenue']              = val('businessAnnualRevenue');
-      payload['Amount Requested (Business)'] = val('businessAmountRequested');
+      payload.message = [
+        'LOAN TYPE: Business Loan',
+        '',
+        '--- PERSONAL INFORMATION ---',
+        line('Name', 'clientName'),
+        line('Address', 'clientAddress'),
+        line('SSN', 'clientSSN'),
+        line('Date of Birth', 'dateOfBirth'),
+        line('Email', 'clientEmail'),
+        line('Phone', 'clientCellphone'),
+        line('Credit Score', 'estimatedCreditScore'),
+        line('Annual Salary', 'annualSalary'),
+        line('Driver License', 'driverLicenseNumber'),
+        line('DL Expiration', 'dlExpiration'),
+        line('DL Issue Date', 'dlIssueDate'),
+        line('Military Affiliation', 'militaryAffiliation'),
+        line('Amount Requested', 'amountRequested'),
+        line('Job Position and Years', 'jobPositionYears'),
+        line('Credit Website Login', 'creditWebsiteLogin'),
+        '',
+        '--- BUSINESS INFORMATION ---',
+        line('Business Name', 'businessName'),
+        line('Business Phone', 'businessPhone'),
+        line('Business Address', 'businessAddress'),
+        line('Position Title', 'position'),
+        line('Business Type', 'businessType'),
+        line('Business Email', 'businessEmail'),
+        line('EIN Number', 'einNumber'),
+        line('Date of Incorporation', 'dateOfIncorporation'),
+        line('State of Incorporation', 'stateOfIncorporation'),
+        line('Annual Revenue', 'businessAnnualRevenue'),
+        line('Amount Requested', 'businessAmountRequested')
+      ].join('\n');
 
     } else if (selectedLoanType === 'personal') {
-      payload.subject = 'New Personal Loan Application — ' + (val('clientName') || 'Unknown Applicant');
+      payload.subject = 'New Personal Loan Application - ' + (val('clientName') || 'Unknown Applicant');
       payload.name    = val('clientName');
       payload.email   = val('clientEmail');
-      payload['Loan Type']              = 'Personal Loan';
-      payload['Client Name']            = val('clientName');
-      payload['Client Address']         = val('clientAddress');
-      payload['Client SSN']             = val('clientSSN');
-      payload['Date of Birth']          = val('dateOfBirth');
-      payload['Client Email']           = val('clientEmail');
-      payload['Client Cellphone']       = val('clientCellphone');
-      payload['Estimated Credit Score'] = val('estimatedCreditScore');
-      payload['Annual Salary']          = val('annualSalary');
-      payload['Driver License Number']  = val('driverLicenseNumber');
-      payload['DL Expiration']          = val('dlExpiration');
-      payload['DL Issue Date']          = val('dlIssueDate');
-      payload['Military Affiliation']   = val('militaryAffiliation');
-      payload['Amount Requested']       = val('amountRequested');
-      payload['Job Position / Years']   = val('jobPositionYears');
-      payload['Credit Website Login']   = val('creditWebsiteLogin');
+      payload.message = [
+        'LOAN TYPE: Personal Loan',
+        '',
+        '--- PERSONAL INFORMATION ---',
+        line('Name', 'clientName'),
+        line('Address', 'clientAddress'),
+        line('SSN', 'clientSSN'),
+        line('Date of Birth', 'dateOfBirth'),
+        line('Email', 'clientEmail'),
+        line('Phone', 'clientCellphone'),
+        line('Credit Score', 'estimatedCreditScore'),
+        line('Annual Salary', 'annualSalary'),
+        line('Driver License', 'driverLicenseNumber'),
+        line('DL Expiration', 'dlExpiration'),
+        line('DL Issue Date', 'dlIssueDate'),
+        line('Military Affiliation', 'militaryAffiliation'),
+        line('Amount Requested', 'amountRequested'),
+        line('Job Position and Years', 'jobPositionYears'),
+        line('Credit Website Login', 'creditWebsiteLogin')
+      ].join('\n');
 
     } else if (selectedLoanType === 'realestate') {
-      payload.subject = 'New Real Estate Loan Application — ' + (val('borrowerName') || 'Unknown Applicant');
+      payload.subject = 'New Real Estate Loan Application - ' + (val('borrowerName') || 'Unknown Applicant');
       payload.name    = val('borrowerName');
       payload.email   = val('reEmail');
-      payload['Loan Type']                    = 'Real Estate Loan';
-      payload['Loan Program']                 = val('loanProgram');
-      payload['Borrower Name']                = val('borrowerName');
-      payload['Credit Score']                 = val('reCreditScore');
-      payload['Email']                        = val('reEmail');
-      payload['Liquidity / Net Worth']        = val('liquidityNetWorth');
-      payload['Flips Completed (Last 3 Yrs)'] = val('flipsCompleted');
-      payload['Rentals Owned']                = val('rentalsOwned');
-      payload['Multi-Family Experience']      = val('multiFamilyExperience');
-      payload['Short-Term Rental Experience'] = val('shortTermRentalExperience');
-      payload['Total Mortgages']              = val('totalMortgages');
-      payload['Professional Management']      = val('professionalManagement');
-      payload['Property Address']             = val('propertyAddress');
-      payload['Property Type']                = val('propertyType');
-      payload['Number of Units']              = val('numberOfUnits');
-      payload['Purchase Price']               = val('purchasePrice');
-      payload['As-Is Value']                  = val('asIsValue');
-      payload['Annual Property Taxes']        = val('annualPropertyTaxes');
-      payload['Annual Insurance']             = val('annualInsurance');
-      payload['Gross Potential Rent']         = val('grossPotentialRent');
-      payload['Current Occupancy (%)']        = val('currentOccupancy');
-      payload['Submarket Occupancy (%)']      = val('submarketOccupancy');
-      payload['Property Expenses']            = val('propertyExpenses');
-      if (val('mortgageBalance'))        payload['Mortgage Balance']        = val('mortgageBalance');
-      if (val('originalPurchasePrice'))  payload['Original Purchase Price'] = val('originalPurchasePrice');
-      if (val('originalPurchaseDate'))   payload['Original Purchase Date']  = val('originalPurchaseDate');
-      if (val('rehabBudget'))            payload['Rehab Budget']            = val('rehabBudget');
-      if (val('projectedARV'))           payload['Projected ARV']           = val('projectedARV');
-      if (val('numberOfFloors'))         payload['Number of Floors']        = val('numberOfFloors');
-      if (val('squareFootageAdded'))     payload['Square Footage Added']    = val('squareFootageAdded');
-      if (val('previousRehab'))          payload['Previous Rehab']          = val('previousRehab');
-      if (val('exitStrategy'))           payload['Exit Strategy']           = val('exitStrategy');
+      const reLines = [
+        'LOAN TYPE: Real Estate Loan',
+        '',
+        '--- BORROWER INFORMATION ---',
+        line('Loan Program', 'loanProgram'),
+        line('Borrower Name', 'borrowerName'),
+        line('Credit Score', 'reCreditScore'),
+        line('Email', 'reEmail'),
+        line('Liquidity and Net Worth', 'liquidityNetWorth'),
+        line('Flips Completed Last 3 Years', 'flipsCompleted'),
+        line('Rentals Owned', 'rentalsOwned'),
+        line('Multi-Family Experience', 'multiFamilyExperience'),
+        line('Short-Term Rental Experience', 'shortTermRentalExperience'),
+        line('Total Mortgages', 'totalMortgages'),
+        line('Professional Management', 'professionalManagement'),
+        '',
+        '--- PROPERTY INFORMATION ---',
+        line('Property Address', 'propertyAddress'),
+        line('Property Type', 'propertyType'),
+        line('Number of Units', 'numberOfUnits'),
+        line('Purchase Price', 'purchasePrice'),
+        line('As-Is Value', 'asIsValue'),
+        line('Annual Property Taxes', 'annualPropertyTaxes'),
+        line('Annual Insurance', 'annualInsurance'),
+        line('Gross Potential Rent', 'grossPotentialRent'),
+        line('Current Occupancy', 'currentOccupancy'),
+        line('Submarket Occupancy', 'submarketOccupancy'),
+        line('Property Expenses', 'propertyExpenses')
+      ];
+      if (val('mortgageBalance'))       reLines.push(line('Mortgage Balance', 'mortgageBalance'));
+      if (val('originalPurchasePrice')) reLines.push(line('Original Purchase Price', 'originalPurchasePrice'));
+      if (val('originalPurchaseDate'))  reLines.push(line('Original Purchase Date', 'originalPurchaseDate'));
+      if (val('rehabBudget'))           reLines.push(line('Rehab Budget', 'rehabBudget'));
+      if (val('projectedARV'))          reLines.push(line('Projected ARV', 'projectedARV'));
+      if (val('numberOfFloors'))        reLines.push(line('Number of Floors', 'numberOfFloors'));
+      if (val('squareFootageAdded'))    reLines.push(line('Square Footage Added', 'squareFootageAdded'));
+      if (val('previousRehab'))         reLines.push(line('Previous Rehab', 'previousRehab'));
+      if (val('exitStrategy'))          reLines.push(line('Exit Strategy', 'exitStrategy'));
+      payload.message = reLines.join('\n');
     }
 
     const submitBtn = document.querySelector('#step4-wrap .btn-orange');
