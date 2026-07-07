@@ -143,10 +143,50 @@ A single-file HTML website for Champs Global Solutions business funding.
 
 ---
 
+### 19. Web3Forms Integration
+- **Decision**: All three application forms (Business, Personal, Real Estate) submit via Web3Forms API to **ricky.beauchamps@gmail.com**
+- **Access key**: `4407f7d3-3b8b-4323-9799-09d2fbb735a2`
+- **Payload structure**: Single `message` field containing all form data as formatted text (not individual custom fields)
+- **Why single message field**: Sending 27+ custom fields with special characters (`/`, `%`, `()`, `—`) in the names triggered Web3Forms' spam/security filter. Packing all data into one `message` string resolved the issue immediately.
+- **Other fields sent**: `name`, `email`, `subject` (Web3Forms native fields) + `botcheck: ''` honeypot
+- **One key covers all forms**: Web3Forms does not require a separate key per form type
+
+### 20. Date of Birth Dropdowns
+- **Decision**: Replaced `<input type="date">` for Date of Birth with three separate dropdowns: Month, Day, Year
+- **Year range**: Current year minus 18 (youngest eligible) down to 1920
+- **Hidden input**: `#f-dateOfBirth` is populated via `updateDOB()` whenever any dropdown changes, so validation and form data collection work unchanged
+- **Rationale**: The native date picker calendar was difficult to navigate to old birth years on mobile browsers
+
+---
+
+### 21. Favicon
+- **Decision**: Created `favicon.svg` — navy rounded square with "CG" in orange (#F07B2A)
+- **Rationale**: The logo (`New Logo.png`) is landscape-shaped and looks squished at favicon size; a square SVG with initials renders cleanly at all tab sizes
+
+### 22. Meta Description
+- **Decision**: Added `<meta name="description">` with the following copy:
+  > Champs Global Solutions - Fast Business Funding Without the Paper Chase. Get business funding approvals in 12-72 hours. $100k+ target amounts, no-doc options available, success fee only after funding.
+- **Rationale**: champsglobalservices.com had no meta description set; copy was written based on business model
+
+### 23. Open Graph Tags (WhatsApp / Social Previews)
+- **Decision**: Added full Open Graph meta tag set: `og:type`, `og:url`, `og:title`, `og:description`, `og:image`
+- **OG image**: `https://champsglobalsolutions.com/New%20Logo.png` (absolute URL required)
+- **Rationale**: Without OG tags, WhatsApp only showed the page title and URL — no image, no description. OG tags enable the rich preview card matching what champsglobalservices.com shows.
+- **Note**: WhatsApp caches previews — test by sending to a new conversation to see the updated card
+
+---
+
 ## Pending / Not Yet Done
 
 - Contact link in footer (currently `href="#"` — no contact page or modal built yet)
-- Form submission backend — currently front-end only; no data is sent anywhere on submit (plan: Web3Forms integration, one access key covers all loan type submissions, 250 free/month)
+- File upload delivery: free Web3Forms plan does not support attachments — applicants should be directed to email documents separately after submitting
+
+---
+
+### 24. Removed 15% from Success Fee Mentions
+- **Decision**: Removed "15%" from all success fee references across the site — hero text, meta description, OG description, eligibility section, FAQ answer, and form footer
+- **Scope**: 6 occurrences updated; phrasing now reads "success fee only after funding" without specifying the percentage
+- **Rationale**: Client requested removal of the specific percentage from public-facing copy
 
 ---
 
